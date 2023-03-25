@@ -5,11 +5,12 @@ import com.example.spring.entity.SearchRequest;
 import com.example.spring.services.CarsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @RestController
-public class MainController {
+public class CarController {
 
     @Autowired
     private CarsService carsService;

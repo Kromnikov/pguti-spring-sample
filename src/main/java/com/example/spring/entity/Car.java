@@ -5,11 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "cars")
+@Table(name = "cars", uniqueConstraints={
+        @UniqueConstraint(columnNames = {"color", "model"})
+})
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,5 +26,7 @@ public class Car {
     @Column(name = "model", nullable = false)
     private String model;
 
-
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "carId", referencedColumnName = "id")
+    private List<Driver> drivers;
 }
