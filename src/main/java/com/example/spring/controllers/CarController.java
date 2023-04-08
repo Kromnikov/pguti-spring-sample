@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CarController {
 
     @Autowired
