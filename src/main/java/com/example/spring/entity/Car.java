@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "cars", uniqueConstraints={
+@Table(name = "cars", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"color", "model"})
 })
 public class Car {
