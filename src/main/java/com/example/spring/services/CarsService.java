@@ -3,8 +3,8 @@ package com.example.spring.services;
 import com.example.spring.entity.Car;
 import com.example.spring.entity.SearchRequest;
 import com.example.spring.repository.CarsRepository;
+import com.example.spring.repository.DriversRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +18,8 @@ public class CarsService {
 
     @Autowired
     private CarsRepository carsRepository;
+    @Autowired
+    private DriversRepository driversRepository;
 
     public Car getCar(long id) {
         Car car = carsRepository.findById(id);
@@ -32,6 +34,8 @@ public class CarsService {
     }
 
     public Car createCar(Car car) {
+        //TODO кейс с manytomany
+//        car.getDrivers().forEach(driversRepository::save);
         return carsRepository.save(car);
     }
 

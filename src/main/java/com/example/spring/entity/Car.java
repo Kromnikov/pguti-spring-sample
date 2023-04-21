@@ -1,5 +1,6 @@
 package com.example.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.List;
 })
 public class Car {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -25,7 +27,10 @@ public class Car {
     @Column(name = "model", nullable = false)
     private String model;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "carId", referencedColumnName = "id")
-    private List<Driver> drivers;
+//    @JsonManagedReference
+//    @ManyToMany
+//    @JoinTable(name = "cars_drivers_key",
+//            joinColumns = @JoinColumn(name = "car_id"),
+//            inverseJoinColumns = @JoinColumn(name = "driver_id"))
+//    private List<Driver> drivers;
 }
