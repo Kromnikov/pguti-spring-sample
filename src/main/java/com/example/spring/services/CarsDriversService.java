@@ -71,14 +71,4 @@ public class CarsDriversService {
         });
         return drivers2;
     }
-
-    class DriverRowMapper implements RowMapper<Driver> {
-        @Override
-        public Driver mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Driver driver = new Driver();
-            driver.setFirstName(rs.getString("first_name"));
-            driver.setSecondName(rs.getString("second_name"));
-            return driver;
-        }
-    }
 }
