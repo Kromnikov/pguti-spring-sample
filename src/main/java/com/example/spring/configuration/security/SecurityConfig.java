@@ -46,29 +46,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, LogoutHandler logoutHandler, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
-//        http.csrf().disable()
-//                .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers("/login").permitAll()
-//                        .requestMatchers("/drivers/**").hasAnyRole(ROLE2.name(), ADMIN.name())
-//                        .requestMatchers("/cars/**").hasAnyAuthority(ROLE1_CREATE.name())
-//                        .requestMatchers("/**").hasRole(ADMIN.name())
-//                        .anyRequest().authenticated()
-//                ).httpBasic()
-//                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and().authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .logout().logoutUrl("/logout").addLogoutHandler(logoutHandler).logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, LogoutHandler logoutHandler, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login", "/refresh-token").permitAll()
                 .requestMatchers("/drivers/**").hasAnyRole(ROLE2.name(), ADMIN.name())
                 .requestMatchers("/cars/**").hasAnyAuthority(ROLE1_CREATE.name())
                 .requestMatchers("/**").hasRole(ADMIN.name())
