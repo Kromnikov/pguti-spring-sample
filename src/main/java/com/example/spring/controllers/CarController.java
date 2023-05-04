@@ -7,12 +7,13 @@ import com.example.spring.entity.SearchRequest;
 import com.example.spring.services.CarsDriversService;
 import com.example.spring.services.CarsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@RequestMapping("/cars")
 public class CarController {
 
     @Autowired
@@ -21,33 +22,35 @@ public class CarController {
     @Autowired
     private CarsDriversService carsDriversService;
 
-    @GetMapping(value = "/cars/{id}")
+    @GetMapping(value = "/{id}")
     public Car getCar(@PathVariable("id") long id, @CurrentUser String user) {
         System.out.println(user);
         return carsService.getCar(id);
     }
 
-    @GetMapping(value = "/cars")
+    @GetMapping()
     public Iterable<Car> getAllCar() {
         return carsService.getAllCar();
     }
 
-    @PostMapping("/cars")
+    @PostMapping()
     public Car createCar(@RequestBody Car car) {
         return carsService.createCar(car);
     }
 
-    @PostMapping("/cars/find")
+    // Only for demo - hasAnyRole('ROLE_ROLE2') return 403!
+    @PreAuthorize("hasAnyRole('ROLE_ROLE2') or hasAuthority('ROLE1_READ')")
+    @PostMapping("/find")
     public List<Car> findCars(@RequestBody SearchRequest request) {
         return carsService.findCars(request);
     }
 
-    @PostMapping("/cars/{id}/drivers")
+    @PostMapping("/{id}/drivers")
     public void addDriversToCar(@PathVariable("id") long id, @RequestBody List<Long> driversIds) {
         carsDriversService.addDriversToCar(id, driversIds);
     }
 
-    @GetMapping("/cars/{id}/drivers")
+    @GetMapping("/{id}/drivers")
     public List<Driver> getDriversByCar(@PathVariable("id") long id) {
         return carsDriversService.getDriversByCar(id);
     }
