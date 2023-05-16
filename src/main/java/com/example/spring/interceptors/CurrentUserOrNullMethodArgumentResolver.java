@@ -1,6 +1,8 @@
 package com.example.spring.interceptors;
 
 import com.example.spring.annotations.CurrentUser;
+import com.example.spring.configuration.security.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -11,6 +13,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Service
 public class CurrentUserOrNullMethodArgumentResolver implements HandlerMethodArgumentResolver {
+    @Autowired
+    JwtService jwtService;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(CurrentUser.class);
@@ -18,10 +23,10 @@ public class CurrentUserOrNullMethodArgumentResolver implements HandlerMethodArg
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String user = webRequest.getHeader("user");
-        if (!StringUtils.hasLength(user)) {
-            throw new IllegalArgumentException("User header is empty");
+        String authorization = webRequest.getHeader("Authorization");
+        if (!StringUtils.hasLength(authorization) || !authorization.startsWith("Bearer ")) {
+            return null;
         }
-        return user;
+        return jwtService.extractUsername(authorization.substring(7));
     }
 }

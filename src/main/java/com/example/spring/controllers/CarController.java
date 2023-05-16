@@ -24,6 +24,7 @@ public class CarController {
 
     @GetMapping(value = "/{id}")
     public Car getCar(@PathVariable("id") long id, @CurrentUser String user) {
+        // Just example for @CurrentUser
         System.out.println(user);
         return carsService.getCar(id);
     }
